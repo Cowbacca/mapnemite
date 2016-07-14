@@ -30,27 +30,26 @@
               zoom: 13
           });
 
-          fetch(`/pointsOfInterest?latitude=${50.8232076}&longitude=${-0.1545839}&radius=20`)
+          fetch(`/lures?latitude=${50.8232076}&longitude=${-0.1545839}&radius=20`)
               .then(resp => resp.json())
-              .then(json => json.pointsOfInterest)
-              .then(pointsOfInterest => pointsOfInterest.forEach(marker));
+              .then(json => json.lures)
+              .then(lures => lures.forEach(marker));
 
           google.maps.event.addListener(map, 'click', function(event) {
               const location = event.latLng;
               placeMarker(location);
-              fetch(`/pointsOfInterest?latitude=${location.lat()}&longitude=${location.lng()}&type=pokestop`, {
+              fetch(`/lures?latitude=${location.lat()}&longitude=${location.lng()}`, {
                   method: 'POST'
               });
           });
 
-          function marker(poi) {
-              placeMarker({
-                  lat: poi.latitude,
-                  lng: poi.longitude
-              });
+          function marker(lure) {
+              console.log(lure);
+              const location = new google.maps.LatLng(lure.latitude, lure.longitude);
+              placeMarker(location, lure.expiryTime);
           }
 
-          function placeMarker(location) {
+          function placeMarker(location, expiryTime) {
               new google.maps.Marker({
                   position: location,
                   map: map,
@@ -61,10 +60,18 @@
                       anchor: new google.maps.Point(25, 50) // anchor
                   },
               });
+
+              new MapLabel({
+                text: `Expires at: ${moment.unix(expiryTime).format('HH:mm:ss')}`,
+                position: location,
+                map: map,
+                fontSize: 20,
+              });
           }
       }
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjd3YNUtA7qYSlqcbKh0HUr1DCa1e9BzQ&callback=initMap"
-        async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjd3YNUtA7qYSlqcbKh0HUr1DCa1e9BzQ&callback=initMap"></script>
+<script type="text/javascript" src="/js/lib/maplabel.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
 </body>
 </html>

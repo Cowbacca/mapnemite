@@ -1,12 +1,11 @@
-package com.mapnemite.external;
+package com.mapnemite.boundary;
 
-import com.mapnemite.boundary.PointOfInterestRepository;
-import com.mapnemite.domain.PointOfInterest;
+import com.mapnemite.domain.Lure;
+import com.mapnemite.domain.LureRepository;
 import com.mapnemite.domain.location.Circle;
 import io.searchbox.action.Action;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
-import io.searchbox.core.BulkResult;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
@@ -15,9 +14,6 @@ import io.searchbox.indices.IndicesExists;
 import io.searchbox.indices.mapping.PutMapping;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.common.unit.DistanceUnit;
-import org.elasticsearch.index.mapper.DocumentMapper;
-import org.elasticsearch.index.mapper.core.StringFieldMapper;
-import org.elasticsearch.index.mapper.object.RootObjectMapper;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.stereotype.Repository;
@@ -25,20 +21,19 @@ import org.springframework.stereotype.Repository;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toSet;
 
 @Slf4j
 @Repository
-public class ElasticSearchPointOfInterestRepository implements PointOfInterestRepository{
+public class ElasticSearchLureRepository implements LureRepository {
 
-    public static final String INDEX_NAME = "points_of_interest";
-    private static final String INDEX_TYPE = "point_of_interest";
+    public static final String INDEX_NAME = "lure";
+    private static final String INDEX_TYPE = "lures";
     private final JestClient jestClient;
 
     @Inject
-    public ElasticSearchPointOfInterestRepository(JestClient jestClient) {
+    public ElasticSearchLureRepository(JestClient jestClient) {
         this.jestClient = jestClient;
         boolean indexExists = execute(new IndicesExists.Builder(INDEX_NAME).build()).isSucceeded();
         if(!indexExists) {
@@ -60,21 +55,21 @@ public class ElasticSearchPointOfInterestRepository implements PointOfInterestRe
 
 
     @Override
-    public void save(PointOfInterest pointOfInterest) {
-            Index indexAction = new Index.Builder(new IndexedPointOfInterest(pointOfInterest)).index(INDEX_NAME).type(INDEX_TYPE).build();
+    public void save(Lure lure) {
+        Index indexAction = new Index.Builder(new IndexedLure(lure)).index(INDEX_NAME).type(INDEX_TYPE).build();
             execute(indexAction);
     }
 
     @Override
-    public Set<PointOfInterest> findByLocationWithin(Circle circle) {
+    public Set<Lure> findByLocationWithin(Circle circle) {
         Search search = new Search.Builder(byLocationWithinQuery(circle))
                 .addIndex(INDEX_NAME)
                 .build();
         SearchResult results = execute(search);
 
-        return results.getHits(IndexedPointOfInterest.class).stream()
+        return results.getHits(IndexedLure.class).stream()
                 .map(hit -> hit.source)
-                .map(IndexedPointOfInterest::toPointOfInterest)
+                .map(IndexedLure::toPointOfInterest)
                 .collect(toSet());
     }
 

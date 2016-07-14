@@ -1,4 +1,4 @@
-package com.mapnemite.boundary;
+package com.mapnemite.domain.event;
 
 import lombok.Value;
 

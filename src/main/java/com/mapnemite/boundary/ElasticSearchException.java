@@ -1,6 +1,4 @@
-package com.mapnemite.external;
-
-import java.io.IOException;
+package com.mapnemite.boundary;
 
 public class ElasticSearchException extends RuntimeException {
     public ElasticSearchException(String message) {

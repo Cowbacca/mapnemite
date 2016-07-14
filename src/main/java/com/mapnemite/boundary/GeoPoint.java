@@ -1,4 +1,4 @@
-package com.mapnemite.external;
+package com.mapnemite.boundary;
 
 import lombok.Value;
 

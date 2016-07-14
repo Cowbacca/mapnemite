@@ -1,10 +1,9 @@
-package com.mapnemite.boundary;
+package com.mapnemite.domain.event;
 
 import lombok.Value;
 
 @Value
-public class PointOfInterestDocument {
-    private final String type;
+public class AddLureCommand {
     private final double latitude;
     private final double longitude;
 }
