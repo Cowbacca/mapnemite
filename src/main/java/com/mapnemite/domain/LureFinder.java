@@ -27,7 +27,7 @@ public class LureFinder {
         final double radius = findNearbyPointsOfInterestQuery.getRadius();
 
         Circle circle = new Circle(latitude, longitude, radius);
-        Set<Lure> lures = lureRepository.findByLocationWithin(circle);
+        Set<Lure> lures = lureRepository.findByLocationWithinAndNotExpired(circle);
         return new NearbyLuresDocument(latitude, longitude, radius, lureDocuments(lures));
     }
 
@@ -40,7 +40,7 @@ public class LureFinder {
     public static LureDocument pointOfInterest(Lure pointOfInterest) {
         final double latitude = pointOfInterest.getLocation().getLatitude();
         final double longitude = pointOfInterest.getLocation().getLongitude();
-        final long timePlaced = toEpoch(pointOfInterest.getExpiration().getTimePlaced());
+        final long timePlaced = toEpoch(pointOfInterest.getExpiration().getPlacedAt());
         final long expiryTime = toEpoch(pointOfInterest.getExpiration().expiresAt());
         return new LureDocument(latitude, longitude, timePlaced, expiryTime);
     }

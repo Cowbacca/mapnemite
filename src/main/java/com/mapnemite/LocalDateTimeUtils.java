@@ -7,11 +7,11 @@ import java.time.ZoneId;
 public class LocalDateTimeUtils {
     public static long toEpoch(LocalDateTime time) {
         ZoneId zoneId = ZoneId.systemDefault();
-        return time.atZone(zoneId).toEpochSecond();
+        return time.atZone(zoneId).toInstant().toEpochMilli();
     }
 
     public static LocalDateTime fromEpoch(long seconds) {
-        return Instant.ofEpochSecond(seconds)
+        return Instant.ofEpochMilli(seconds)
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime();
     }

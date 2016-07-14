@@ -17,7 +17,7 @@ public class IndexedLure {
         double latitude = lure.getLocation().getLatitude();
         double longitude = lure.getLocation().getLongitude();
         this.location =  new GeoPoint(latitude, longitude);
-        this.placedAt = toEpoch(lure.getExpiration().getTimePlaced());
+        this.placedAt = toEpoch(lure.getExpiration().getPlacedAt());
         this.expiresAt = toEpoch(lure.getExpiration().expiresAt());
     }
 

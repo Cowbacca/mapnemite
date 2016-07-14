@@ -7,5 +7,5 @@ import java.util.Set;
 public interface LureRepository {
     void save(Lure lure);
 
-    Set<Lure> findByLocationWithin(Circle circle);
+    Set<Lure> findByLocationWithinAndNotExpired(Circle circle);
 }

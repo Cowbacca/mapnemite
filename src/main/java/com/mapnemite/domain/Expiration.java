@@ -7,7 +7,7 @@ import java.time.temporal.TemporalAmount;
 
 @Value
 public class Expiration {
-    private LocalDateTime timePlaced;
+    private LocalDateTime placedAt;
     private TemporalAmount timeToLive;
 
     public boolean isExpiredAt(LocalDateTime time) {
@@ -15,6 +15,6 @@ public class Expiration {
     }
 
     public LocalDateTime expiresAt() {
-        return timePlaced.plus(timeToLive);
+        return placedAt.plus(timeToLive);
     }
 }

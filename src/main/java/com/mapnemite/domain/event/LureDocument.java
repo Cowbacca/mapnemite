@@ -6,6 +6,6 @@ import lombok.Value;
 public class LureDocument {
     private final double latitude;
     private final double longitude;
-    private final long timePlaced;
-    private final long expiryTime;
+    private final long placedAt;
+    private final long expiresAt;
 }

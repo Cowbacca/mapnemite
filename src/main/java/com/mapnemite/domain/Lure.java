@@ -11,9 +11,9 @@ public class Lure implements Expirable {
     private Location location;
     private Expiration expiration;
 
-    public Lure(Location location, LocalDateTime timePlaced) {
+    public Lure(Location location, LocalDateTime placedAt) {
         this.location = location;
-        this.expiration = new Expiration(timePlaced, Duration.ofMinutes(30));
+        this.expiration = new Expiration(placedAt, Duration.ofMinutes(30));
     }
 
     public boolean isExpired() {

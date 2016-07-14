@@ -28,8 +28,8 @@ import static java.util.stream.Collectors.toSet;
 @Repository
 public class ElasticSearchLureRepository implements LureRepository {
 
-    public static final String INDEX_NAME = "lure";
-    private static final String INDEX_TYPE = "lures";
+    public static final String INDEX_NAME = "lures";
+    private static final String INDEX_TYPE = "lure";
     private final JestClient jestClient;
 
     @Inject
@@ -61,7 +61,7 @@ public class ElasticSearchLureRepository implements LureRepository {
     }
 
     @Override
-    public Set<Lure> findByLocationWithin(Circle circle) {
+    public Set<Lure> findByLocationWithinAndNotExpired(Circle circle) {
         Search search = new Search.Builder(byLocationWithinQuery(circle))
                 .addIndex(INDEX_NAME)
                 .build();
@@ -76,7 +76,7 @@ public class ElasticSearchLureRepository implements LureRepository {
     private String byLocationWithinQuery(Circle circle) {
         return new SearchSourceBuilder().query(
                 QueryBuilders.boolQuery()
-                .must(QueryBuilders.matchAllQuery())
+                        .must(QueryBuilders.rangeQuery("expiresAt").gt(System.currentTimeMillis()))
                 .filter(QueryBuilders.geoDistanceQuery("location")
                         .point(circle.getX(), circle.getY())
                         .distance(circle.getRadius(), DistanceUnit.KILOMETERS))
