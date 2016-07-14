@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import javax.inject.Inject;
 import java.util.Set;
 
-import static com.mapnemite.LocalDateTimeUtils.toEpoch;
 import static java.util.stream.Collectors.toSet;
 
 @Component
@@ -33,15 +32,7 @@ public class LureFinder {
 
     public static Set<LureDocument> lureDocuments(Set<Lure> lures) {
         return lures.stream()
-                .map(LureFinder::pointOfInterest)
+                .map(LureDocument::new)
                 .collect(toSet());
-    }
-
-    public static LureDocument pointOfInterest(Lure pointOfInterest) {
-        final double latitude = pointOfInterest.getLocation().getLatitude();
-        final double longitude = pointOfInterest.getLocation().getLongitude();
-        final long timePlaced = toEpoch(pointOfInterest.getExpiration().getPlacedAt());
-        final long expiryTime = toEpoch(pointOfInterest.getExpiration().expiresAt());
-        return new LureDocument(latitude, longitude, timePlaced, expiryTime);
     }
 }

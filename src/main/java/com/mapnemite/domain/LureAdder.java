@@ -1,6 +1,7 @@
 package com.mapnemite.domain;
 
 import com.mapnemite.domain.event.AddLureCommand;
+import com.mapnemite.domain.event.LureDocument;
 import com.mapnemite.domain.location.Location;
 import org.springframework.stereotype.Component;
 
@@ -17,9 +18,10 @@ public class LureAdder {
         this.lureRepository = lureRepository;
     }
 
-    public void addLure(AddLureCommand addLureCommand) {
+    public LureDocument addLure(AddLureCommand addLureCommand) {
         Location location = new Location(addLureCommand.getLatitude(), addLureCommand.getLongitude());
         Lure lure = new Lure(location, LocalDateTime.now());
         lureRepository.save(lure);
+        return new LureDocument(lure);
     }
 }

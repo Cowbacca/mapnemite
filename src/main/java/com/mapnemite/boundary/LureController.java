@@ -4,8 +4,8 @@ import com.mapnemite.domain.LureAdder;
 import com.mapnemite.domain.LureFinder;
 import com.mapnemite.domain.event.AddLureCommand;
 import com.mapnemite.domain.event.FindNearbyPointsOfInterestQuery;
+import com.mapnemite.domain.event.LureDocument;
 import com.mapnemite.domain.event.NearbyLuresDocument;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,9 +33,9 @@ public class LureController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.OK)
-    private void postLure(@RequestParam double latitude, @RequestParam double longitude) {
+    @ResponseBody
+    private LureDocument postLure(@RequestParam double latitude, @RequestParam double longitude) {
         AddLureCommand command = new AddLureCommand(latitude, longitude);
-        lureAdder.addLure(command);
+        return lureAdder.addLure(command);
     }
 }
