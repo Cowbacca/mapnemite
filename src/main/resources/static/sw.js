@@ -18,6 +18,13 @@ self.addEventListener('push', function(event) {
 
   var data = event.data.json();
 
+  self.clients.matchAll().then(function(clients) {
+    clients.forEach(function(client) {
+      console.log(client);
+      client.postMessage(data);
+    });
+  });
+
   event.waitUntil(
     self.registration.showNotification(title, {
       'body': 'Expires at ' + new Date(parseInt(data.expiresAt)).toLocaleTimeString(),

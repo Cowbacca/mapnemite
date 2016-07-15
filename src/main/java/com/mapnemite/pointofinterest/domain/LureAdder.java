@@ -26,7 +26,7 @@ public class LureAdder {
         Lure lure = new Lure(location, LocalDateTime.now());
         lureRepository.save(lure);
 
-        notificationEventReciever.pushNotificationToSubscribers(new LurePlacedNotification(lure.getExpiration().expiresAt()));
+        notificationEventReciever.pushNotificationToSubscribers(new LurePlacedNotification(lure));
 
         return new LureDocument(lure);
     }
