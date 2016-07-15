@@ -1,4 +1,4 @@
-package com.mapnemite.domain;
+package com.mapnemite.pointofinterest.domain;
 
 import lombok.Value;
 

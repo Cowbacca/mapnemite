@@ -1,6 +1,6 @@
-package com.mapnemite.domain.event;
+package com.mapnemite.pointofinterest.domain.event;
 
-import com.mapnemite.domain.Lure;
+import com.mapnemite.pointofinterest.domain.Lure;
 import lombok.Value;
 
 import static com.mapnemite.LocalDateTimeUtils.toEpoch;

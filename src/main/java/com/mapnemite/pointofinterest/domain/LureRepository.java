@@ -1,6 +1,6 @@
-package com.mapnemite.domain;
+package com.mapnemite.pointofinterest.domain;
 
-import com.mapnemite.domain.location.Circle;
+import com.mapnemite.pointofinterest.domain.location.Circle;
 
 import java.util.Set;
 

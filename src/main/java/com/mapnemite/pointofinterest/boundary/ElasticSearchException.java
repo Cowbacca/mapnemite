@@ -1,4 +1,4 @@
-package com.mapnemite.boundary;
+package com.mapnemite.pointofinterest.boundary;
 
 public class ElasticSearchException extends RuntimeException {
     public ElasticSearchException(String message) {

@@ -37,6 +37,8 @@ dependencies {
     compile 'io.searchbox:jest:2.0.2'
     compile 'org.elasticsearch:elasticsearch:2.3.3'
 
+    compile 'com.google.gcm:gcm-server:1.0.0'
+
     compile 'com.google.guava:guava:19.0'
     compile 'javax.inject:javax.inject:1'
     provided 'org.projectlombok:lombok:1.16.6'

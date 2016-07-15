@@ -1,9 +1,9 @@
-package com.mapnemite.domain;
+package com.mapnemite.pointofinterest.domain;
 
-import com.mapnemite.domain.event.FindNearbyPointsOfInterestQuery;
-import com.mapnemite.domain.event.LureDocument;
-import com.mapnemite.domain.event.NearbyLuresDocument;
-import com.mapnemite.domain.location.Circle;
+import com.mapnemite.pointofinterest.domain.event.FindNearbyPointsOfInterestQuery;
+import com.mapnemite.pointofinterest.domain.event.LureDocument;
+import com.mapnemite.pointofinterest.domain.event.NearbyLuresDocument;
+import com.mapnemite.pointofinterest.domain.location.Circle;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;

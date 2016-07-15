@@ -1,11 +1,11 @@
-package com.mapnemite.boundary;
+package com.mapnemite.pointofinterest.boundary;
 
-import com.mapnemite.domain.LureAdder;
-import com.mapnemite.domain.LureFinder;
-import com.mapnemite.domain.event.AddLureCommand;
-import com.mapnemite.domain.event.FindNearbyPointsOfInterestQuery;
-import com.mapnemite.domain.event.LureDocument;
-import com.mapnemite.domain.event.NearbyLuresDocument;
+import com.mapnemite.pointofinterest.domain.LureAdder;
+import com.mapnemite.pointofinterest.domain.LureFinder;
+import com.mapnemite.pointofinterest.domain.event.AddLureCommand;
+import com.mapnemite.pointofinterest.domain.event.FindNearbyPointsOfInterestQuery;
+import com.mapnemite.pointofinterest.domain.event.LureDocument;
+import com.mapnemite.pointofinterest.domain.event.NearbyLuresDocument;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
