@@ -7,7 +7,6 @@ import com.mapnemite.notification.domain.NotificationSender;
 import nl.martijndwars.webpush.GcmNotification;
 import nl.martijndwars.webpush.PushService;
 import nl.martijndwars.webpush.Utils;
-import org.apache.http.client.fluent.Content;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.stereotype.Component;
 
@@ -19,16 +18,18 @@ import java.io.IOException;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 @Component
 public class GcmSender implements NotificationSender {
     private final PushService sender;
+    private final Gson gson;
 
     @Inject
-    public GcmSender(PushService sender) {
-        Security.addProvider(new BouncyCastleProvider());
+    public GcmSender(PushService sender, Gson gson) {
+        this.gson = gson;
         this.sender = sender;
+
+        Security.addProvider(new BouncyCastleProvider());
     }
 
     @Override
@@ -39,15 +40,13 @@ public class GcmSender implements NotificationSender {
             byte[] userAuth = BaseEncoding.base64Url().decode(encodedUserAuth);
             GcmNotification gcmNotification = new GcmNotification(registrationId, userPublicKey, userAuth, payload);
 
-            Future<Content> httpResponse = sender.send(gcmNotification);
-            System.out.println(httpResponse.get().asString());
+            sender.send(gcmNotification);
         } catch (IOException | InvalidKeySpecException | NoSuchAlgorithmException | BadPaddingException | InvalidKeyException | InvalidAlgorithmParameterException | NoSuchPaddingException | NoSuchProviderException | IllegalBlockSizeException | InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
     }
 
     private byte[] payload(Notification notification) {
-        Gson gson = new Gson();
         String json = gson.toJson(notification.asMap());
         return json.getBytes();
     }
