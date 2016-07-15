@@ -16,6 +16,10 @@ self.addEventListener('push', function(event) {
 
   var title = 'Push message';
 
+  if (event.data) {
+      console.log(event.data.json());
+    }
+
   event.waitUntil(
     self.registration.showNotification(title, {
       'body': 'The Message',

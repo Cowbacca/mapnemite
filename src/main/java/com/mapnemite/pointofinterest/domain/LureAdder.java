@@ -1,7 +1,6 @@
 package com.mapnemite.pointofinterest.domain;
 
-import com.mapnemite.notification.domain.NotificationEventReceiver;
-import com.mapnemite.notification.domain.event.SendNotificationCommand;
+import com.mapnemite.notification.domain.NotificationToSubscribersPusher;
 import com.mapnemite.pointofinterest.domain.event.AddLureCommand;
 import com.mapnemite.pointofinterest.domain.event.LureDocument;
 import com.mapnemite.pointofinterest.domain.location.Location;
@@ -14,10 +13,10 @@ import java.time.LocalDateTime;
 public class LureAdder {
 
     private final LureRepository lureRepository;
-    private final NotificationEventReceiver notificationEventReciever;
+    private final NotificationToSubscribersPusher notificationEventReciever;
 
     @Inject
-    public LureAdder(LureRepository lureRepository, NotificationEventReceiver notificationEventReciever) {
+    public LureAdder(LureRepository lureRepository, NotificationToSubscribersPusher notificationEventReciever) {
         this.lureRepository = lureRepository;
         this.notificationEventReciever = notificationEventReciever;
     }
@@ -27,7 +26,7 @@ public class LureAdder {
         Lure lure = new Lure(location, LocalDateTime.now());
         lureRepository.save(lure);
 
-        notificationEventReciever.send(new SendNotificationCommand());
+        notificationEventReciever.pushNotificationToSubscribers(new LurePlacedNotification(lure.getExpiration().expiresAt()));
 
         return new LureDocument(lure);
     }

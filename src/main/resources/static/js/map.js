@@ -56,8 +56,13 @@ if ('serviceWorker' in navigator) {
     console.log('Service Worker is ready :^)', reg);
     reg.pushManager.subscribe({userVisibleOnly: true}).then(function(sub) {
       console.log(sub);
-      fetch(`/subscribers/${sub.endpoint.split('/').pop()}`, {
-        method: 'PUT'
+      fetch(`/subscribers`, {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(sub),
       })
       console.log('endpoint:', sub.endpoint);
     });

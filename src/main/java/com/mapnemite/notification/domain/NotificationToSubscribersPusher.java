@@ -1,23 +1,22 @@
 package com.mapnemite.notification.domain;
 
-import com.mapnemite.notification.domain.event.SendNotificationCommand;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
 @Component
-public class NotificationEventReceiver {
+public class NotificationToSubscribersPusher {
     private final SubscriberRepository subscriberRepository;
     private final NotificationSender notificationSender;
 
     @Inject
-    public NotificationEventReceiver(SubscriberRepository subscriberRepository, NotificationSender notificationSender) {
+    public NotificationToSubscribersPusher(SubscriberRepository subscriberRepository, NotificationSender notificationSender) {
         this.subscriberRepository = subscriberRepository;
         this.notificationSender = notificationSender;
     }
 
-    public void send(SendNotificationCommand sendNotificationCommand) {
+    public void pushNotificationToSubscribers(Notification notification) {
         subscriberRepository.findAll()
-                .forEach(subscriber -> subscriber.sendNotification(notificationSender));
+                .forEach(subscriber -> subscriber.sendNotification(notificationSender, notification));
     }
 }
