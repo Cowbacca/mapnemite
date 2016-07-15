@@ -14,15 +14,13 @@ self.addEventListener('activate', function(event) {
 self.addEventListener('push', function(event) {
   console.log('Push message', event);
 
-  var title = 'Push message';
+  var title = 'New lure added!';
 
-  if (event.data) {
-      console.log(event.data.json());
-    }
+  var data = event.data.json();
 
   event.waitUntil(
     self.registration.showNotification(title, {
-      'body': 'The Message',
+      'body': 'Expires at ' + new Date(parseInt(data.expiresAt)).toLocaleTimeString(),
       'icon': 'images/icon.png'
     }));
 });

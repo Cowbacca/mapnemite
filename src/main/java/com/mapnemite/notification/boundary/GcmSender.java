@@ -17,7 +17,6 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
-import java.util.concurrent.ExecutionException;
 
 @Component
 public class GcmSender implements NotificationSender {
@@ -41,7 +40,7 @@ public class GcmSender implements NotificationSender {
             GcmNotification gcmNotification = new GcmNotification(registrationId, userPublicKey, userAuth, payload);
 
             sender.send(gcmNotification);
-        } catch (IOException | InvalidKeySpecException | NoSuchAlgorithmException | BadPaddingException | InvalidKeyException | InvalidAlgorithmParameterException | NoSuchPaddingException | NoSuchProviderException | IllegalBlockSizeException | InterruptedException | ExecutionException e) {
+        } catch (IOException | InvalidKeySpecException | NoSuchAlgorithmException | BadPaddingException | InvalidKeyException | InvalidAlgorithmParameterException | NoSuchPaddingException | NoSuchProviderException | IllegalBlockSizeException e) {
             e.printStackTrace();
         }
     }
