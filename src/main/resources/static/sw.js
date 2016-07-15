@@ -20,7 +20,7 @@ self.addEventListener('push', function(event) {
   var data = {
     latitude: json.latitude,
     longitude: json.longitude,
-    expiresAt: parseInt(data.expiresAt),
+    expiresAt: parseInt(json.expiresAt),
     }
 
   self.clients.matchAll().then(function(clients) {
