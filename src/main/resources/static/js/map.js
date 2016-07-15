@@ -28,6 +28,33 @@ function initMap() {
         }).then(marker);
     });
 
+    if ('serviceWorker' in navigator) {
+      console.log('Service Worker is supported');
+
+      navigator.serviceWorker.addEventListener('message', function(event) {
+          marker(event.data);
+        });
+
+      navigator.serviceWorker.register('sw.js').then(function() {
+        return navigator.serviceWorker.ready;
+      }).then(function(reg) {
+        console.log('Service Worker is ready :^)', reg);
+        reg.pushManager.subscribe({userVisibleOnly: true}).then(function(sub) {
+          fetch(`/subscribers`, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(sub),
+          })
+          console.log('endpoint:', sub.endpoint);
+        });
+      }).catch(function(error) {
+        console.log('Service Worker error :^(', error);
+      });
+    }
+
     function marker(lure) {
         var location = new google.maps.LatLng(lure.latitude, lure.longitude);
         placeMarker(location, lure.expiresAt);
@@ -46,31 +73,4 @@ function initMap() {
             fontSize: 20
         });
     }
-}
-
-if ('serviceWorker' in navigator) {
-  console.log('Service Worker is supported');
-
-  navigator.serviceWorker.addEventListener('message', function(event) {
-      marker(event.data);
-    });
-
-  navigator.serviceWorker.register('sw.js').then(function() {
-    return navigator.serviceWorker.ready;
-  }).then(function(reg) {
-    console.log('Service Worker is ready :^)', reg);
-    reg.pushManager.subscribe({userVisibleOnly: true}).then(function(sub) {
-      fetch(`/subscribers`, {
-        method: 'PUT',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(sub),
-      })
-      console.log('endpoint:', sub.endpoint);
-    });
-  }).catch(function(error) {
-    console.log('Service Worker error :^(', error);
-  });
 }

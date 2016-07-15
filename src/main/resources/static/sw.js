@@ -16,7 +16,12 @@ self.addEventListener('push', function(event) {
 
   var title = 'New lure added!';
 
-  var data = event.data.json();
+  var json = event.data.json();
+  var data = {
+    latitude: json.latitude,
+    longitude: json.longitude,
+    expiresAt: parseInt(data.expiresAt),
+    }
 
   self.clients.matchAll().then(function(clients) {
     clients.forEach(function(client) {
@@ -27,7 +32,7 @@ self.addEventListener('push', function(event) {
 
   event.waitUntil(
     self.registration.showNotification(title, {
-      'body': 'Expires at ' + new Date(parseInt(data.expiresAt)).toLocaleTimeString(),
+      'body': 'Expires at ' + new Date(data.expiresAt).toLocaleTimeString(),
       'icon': 'images/icon.png'
     }));
 });
