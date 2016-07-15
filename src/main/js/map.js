@@ -41,3 +41,10 @@ function initMap() {
         });
     }
 }
+
+if ('serviceWorker' in navigator) {
+  console.log('Service Worker is supported');
+  navigator.serviceWorker.register('sw.js')
+  .then(reg => console.log(':^)', reg))
+  .catch(err => console.log(':^(', err));
+}
