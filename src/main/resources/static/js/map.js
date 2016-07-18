@@ -13,7 +13,8 @@ function initMap() {
         maxZoom: 18,
     });
 
-    fetch('/lures?latitude=' + 50.8232076 + '&longitude=' + -0.1545839 + '&radius=20').then(function (resp) {
+    fetch('/lures?latitude=' + 50.8232076 + '&longitude=' + -0.1545839 + '&radius=20')
+    .then(function (resp) {
         return resp.json();
     }).then(function (json) {
         return json.lures;
@@ -30,17 +31,7 @@ function initMap() {
         }).then(marker);
     });
 
-    google.maps.event.addListener(map, 'bounds_changed', function (event) {
-            var bounds = map.getBounds();
-
-            var ne = bounds.getNorthEast();
-            var sw = bounds.getSouthWest();
-
-            fetch('/lures?neLat=' + ne.lat() + '&neLong=' + ne.lng() + '&swLat=' + sw.lat() + '&swLong=' + sw.lng())
-            .then(function (resp) {
-                return resp.json();
-            }).then(marker);
-        });
+    google.maps.event.addListener(map, 'bounds_changed', _.throttle(findMarkers, 1000));
 
     if ('serviceWorker' in navigator) {
       console.log('Service Worker is supported');
@@ -68,6 +59,23 @@ function initMap() {
         console.log('Service Worker error :^(', error);
       });
     }
+
+    function findMarkers(event) {
+        console.log("Am I throttled?")
+                var bounds = map.getBounds();
+
+                var ne = bounds.getNorthEast();
+                var sw = bounds.getSouthWest();
+
+                fetch('/lures?neLat=' + ne.lat() + '&neLong=' + ne.lng() + '&swLat=' + sw.lat() + '&swLong=' + sw.lng())
+                .then(function (resp) {
+                    return resp.json();
+                }).then(function (json) {
+                    return json.lures;
+                }).then(function (lures) {
+                    return lures.forEach(marker);
+                });
+     }
 
     function marker(lure) {
         var location = new google.maps.LatLng(lure.latitude, lure.longitude);
