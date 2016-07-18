@@ -2,10 +2,8 @@ package com.mapnemite.pointofinterest.boundary;
 
 import com.mapnemite.pointofinterest.domain.LureAdder;
 import com.mapnemite.pointofinterest.domain.LureFinder;
-import com.mapnemite.pointofinterest.domain.event.AddLureCommand;
-import com.mapnemite.pointofinterest.domain.event.FindNearbyPointsOfInterestQuery;
-import com.mapnemite.pointofinterest.domain.event.LureDocument;
-import com.mapnemite.pointofinterest.domain.event.NearbyLuresDocument;
+import com.mapnemite.pointofinterest.domain.event.*;
+import com.mapnemite.pointofinterest.domain.location.Location;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,11 +23,18 @@ public class LureController {
         this.lureAdder = lureAdder;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, params = {"latitude", "longitude", "radius"})
     @ResponseBody
     private NearbyLuresDocument getNearby(@RequestParam double latitude, @RequestParam double longitude, @RequestParam double radius) {
         FindNearbyPointsOfInterestQuery query = new FindNearbyPointsOfInterestQuery(latitude, longitude, radius);
         return lureFinder.findNearbyPointsOfInterest(query);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, params = {"neLat", "neLong", "swLat", "swLong"})
+    @ResponseBody
+    private LuresInRegionDocument getInRegion(@RequestParam double neLat, @RequestParam double neLong, @RequestParam double swLat, @RequestParam double swLong) {
+        FindLuresInRegionQuery query = new FindLuresInRegionQuery(new Location(neLat, neLong), new Location(swLat, swLong));
+        return lureFinder.findLuresInRegion(query);
     }
 
     @RequestMapping(method = RequestMethod.POST)

@@ -8,7 +8,9 @@ function initMap() {
             lat: 50.8232076,
             lng: -0.1545839
         },
-        zoom: 15
+        zoom: 16,
+        minZoom: 12,
+        maxZoom: 18,
     });
 
     fetch('/lures?latitude=' + 50.8232076 + '&longitude=' + -0.1545839 + '&radius=20').then(function (resp) {
@@ -27,6 +29,18 @@ function initMap() {
             return resp.json();
         }).then(marker);
     });
+
+    google.maps.event.addListener(map, 'bounds_changed', function (event) {
+            var bounds = map.getBounds();
+
+            var ne = bounds.getNorthEast();
+            var sw = bounds.getSouthWest();
+
+            fetch('/lures?neLat=' + ne.lat() + '&neLong=' + ne.lng() + '&swLat=' + sw.lat() + '&swLong=' + sw.lng())
+            .then(function (resp) {
+                return resp.json();
+            }).then(marker);
+        });
 
     if ('serviceWorker' in navigator) {
       console.log('Service Worker is supported');

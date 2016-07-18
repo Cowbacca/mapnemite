@@ -3,6 +3,7 @@ package com.mapnemite.pointofinterest.boundary;
 import com.mapnemite.pointofinterest.domain.Lure;
 import com.mapnemite.pointofinterest.domain.LureRepository;
 import com.mapnemite.pointofinterest.domain.location.Circle;
+import com.mapnemite.pointofinterest.domain.location.Rectangle;
 import io.searchbox.action.Action;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
@@ -14,6 +15,9 @@ import io.searchbox.indices.IndicesExists;
 import io.searchbox.indices.mapping.PutMapping;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.common.unit.DistanceUnit;
+import org.elasticsearch.index.query.GeoBoundingBoxQueryBuilder;
+import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.stereotype.Repository;
@@ -62,7 +66,24 @@ public class ElasticSearchLureRepository implements LureRepository {
 
     @Override
     public Set<Lure> findByLocationWithinAndNotExpired(Circle circle) {
-        Search search = new Search.Builder(byLocationWithinQuery(circle))
+        GeoDistanceQueryBuilder geoFilter = QueryBuilders.geoDistanceQuery("location")
+                .point(circle.getX(), circle.getY())
+                .distance(circle.getRadius(), DistanceUnit.KILOMETERS);
+
+        return findByNotExpiredAndFilterBy(geoFilter);
+    }
+
+    @Override
+    public Set<Lure> findByLocationWithinAndNotExpired(Rectangle rectangle) {
+        GeoBoundingBoxQueryBuilder geoFilter = QueryBuilders.geoBoundingBoxQuery("location")
+                .topRight(rectangle.getTopRight().getLatitude(), rectangle.getTopRight().getLongitude())
+                .bottomLeft(rectangle.getBottomLeft().getLatitude(), rectangle.getBottomLeft().getLongitude());
+
+        return findByNotExpiredAndFilterBy(geoFilter);
+    }
+
+    private Set<Lure> findByNotExpiredAndFilterBy(QueryBuilder filter) {
+        Search search = new Search.Builder(queryByNotExpiredAndFilterBy(filter))
                 .addIndex(INDEX_NAME)
                 .build();
         SearchResult results = execute(search);
@@ -73,13 +94,11 @@ public class ElasticSearchLureRepository implements LureRepository {
                 .collect(toSet());
     }
 
-    private String byLocationWithinQuery(Circle circle) {
+    private String queryByNotExpiredAndFilterBy(QueryBuilder geoFilter) {
         return new SearchSourceBuilder().query(
                 QueryBuilders.boolQuery()
                         .must(QueryBuilders.rangeQuery("expiresAt").gt(System.currentTimeMillis()))
-                .filter(QueryBuilders.geoDistanceQuery("location")
-                        .point(circle.getX(), circle.getY())
-                        .distance(circle.getRadius(), DistanceUnit.KILOMETERS))
+                        .filter(geoFilter)
         ).toString();
     }
 

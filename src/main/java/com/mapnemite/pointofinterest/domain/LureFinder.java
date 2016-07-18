@@ -1,9 +1,9 @@
 package com.mapnemite.pointofinterest.domain;
 
-import com.mapnemite.pointofinterest.domain.event.FindNearbyPointsOfInterestQuery;
-import com.mapnemite.pointofinterest.domain.event.LureDocument;
-import com.mapnemite.pointofinterest.domain.event.NearbyLuresDocument;
+import com.mapnemite.pointofinterest.domain.event.*;
 import com.mapnemite.pointofinterest.domain.location.Circle;
+import com.mapnemite.pointofinterest.domain.location.Location;
+import com.mapnemite.pointofinterest.domain.location.Rectangle;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
@@ -28,6 +28,14 @@ public class LureFinder {
         Circle circle = new Circle(latitude, longitude, radius);
         Set<Lure> lures = lureRepository.findByLocationWithinAndNotExpired(circle);
         return new NearbyLuresDocument(latitude, longitude, radius, lureDocuments(lures));
+    }
+
+    public LuresInRegionDocument findLuresInRegion(FindLuresInRegionQuery query) {
+        Location northWest = query.getNorthEast();
+        Location southEast = query.getSouthWest();
+        Rectangle rectangle = new Rectangle(northWest, southEast);
+        Set<Lure> lures = lureRepository.findByLocationWithinAndNotExpired(rectangle);
+        return new LuresInRegionDocument(northWest, southEast, lureDocuments(lures));
     }
 
     public static Set<LureDocument> lureDocuments(Set<Lure> lures) {
