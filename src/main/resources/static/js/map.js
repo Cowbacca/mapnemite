@@ -5,21 +5,13 @@ var map;
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         center: {
-            lat: 0,
-            lng: 0
+            lat: 50.8225,
+            lng: 0.1372,
         },
         zoom: 16,
         minZoom: 12,
         maxZoom: 18,
     });
-
-    if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
-        });
-    } else {
-        console.log("No GeoLocation. :(");
-    }
 
     google.maps.event.addListener(map, 'click', function(event) {
         var location = event.latLng;
@@ -31,6 +23,14 @@ function initMap() {
     });
 
     google.maps.event.addListener(map, 'bounds_changed', _.throttle(findMarkers, 1000));
+
+    if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+        });
+    } else {
+        console.log("No GeoLocation. :(");
+    }
 
     if ('serviceWorker' in navigator) {
         console.log('Service Worker is supported');
@@ -46,15 +46,14 @@ function initMap() {
             reg.pushManager.subscribe({
                 userVisibleOnly: true
             }).then(function(sub) {
-                fetch(`/subscribers`, {
+                fetch('/subscribers', {
                     method: 'PUT',
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(sub),
-                })
-                console.log('endpoint:', sub.endpoint);
+                });
             });
         }).catch(function(error) {
             console.log('Service Worker error :^(', error);
