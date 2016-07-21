@@ -13,20 +13,11 @@ function initMap() {
         maxZoom: 18,
     });
 
-    fetch('/lures?latitude=' + 50.8232076 + '&longitude=' + -0.1545839 + '&radius=20')
-    .then(function (resp) {
-        return resp.json();
-    }).then(function (json) {
-        return json.lures;
-    }).then(function (lures) {
-        return lures.forEach(marker);
-    });
-
-    google.maps.event.addListener(map, 'click', function (event) {
+    google.maps.event.addListener(map, 'click', function(event) {
         var location = event.latLng;
         fetch('/lures?latitude=' + location.lat() + '&longitude=' + location.lng(), {
             method: 'POST'
-        }).then(function (resp) {
+        }).then(function(resp) {
             return resp.json();
         }).then(marker);
     });
@@ -34,48 +25,49 @@ function initMap() {
     google.maps.event.addListener(map, 'bounds_changed', _.throttle(findMarkers, 1000));
 
     if ('serviceWorker' in navigator) {
-      console.log('Service Worker is supported');
+        console.log('Service Worker is supported');
 
-      navigator.serviceWorker.addEventListener('message', function(event) {
-          marker(event.data);
+        navigator.serviceWorker.addEventListener('message', function(event) {
+            marker(event.data);
         });
 
-      navigator.serviceWorker.register('sw.js').then(function() {
-        return navigator.serviceWorker.ready;
-      }).then(function(reg) {
-        console.log('Service Worker is ready :^)', reg);
-        reg.pushManager.subscribe({userVisibleOnly: true}).then(function(sub) {
-          fetch(`/subscribers`, {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(sub),
-          })
-          console.log('endpoint:', sub.endpoint);
+        navigator.serviceWorker.register('sw.js').then(function() {
+            return navigator.serviceWorker.ready;
+        }).then(function(reg) {
+            console.log('Service Worker is ready :^)', reg);
+            reg.pushManager.subscribe({
+                userVisibleOnly: true
+            }).then(function(sub) {
+                fetch(`/subscribers`, {
+                    method: 'PUT',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(sub),
+                })
+                console.log('endpoint:', sub.endpoint);
+            });
+        }).catch(function(error) {
+            console.log('Service Worker error :^(', error);
         });
-      }).catch(function(error) {
-        console.log('Service Worker error :^(', error);
-      });
     }
 
     function findMarkers(event) {
-        console.log("Am I throttled?")
-                var bounds = map.getBounds();
+        var bounds = map.getBounds();
 
-                var ne = bounds.getNorthEast();
-                var sw = bounds.getSouthWest();
+        var ne = bounds.getNorthEast();
+        var sw = bounds.getSouthWest();
 
-                fetch('/lures?neLat=' + ne.lat() + '&neLong=' + ne.lng() + '&swLat=' + sw.lat() + '&swLong=' + sw.lng())
-                .then(function (resp) {
-                    return resp.json();
-                }).then(function (json) {
-                    return json.lures;
-                }).then(function (lures) {
-                    return lures.forEach(marker);
-                });
-     }
+        fetch('/lures?neLat=' + ne.lat() + '&neLong=' + ne.lng() + '&swLat=' + sw.lat() + '&swLong=' + sw.lng())
+            .then(function(resp) {
+                return resp.json();
+            }).then(function(json) {
+                return json.lures;
+            }).then(function(lures) {
+                return lures.forEach(marker);
+            });
+    }
 
     function marker(lure) {
         var location = new google.maps.LatLng(lure.latitude, lure.longitude);
