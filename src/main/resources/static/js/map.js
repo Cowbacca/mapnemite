@@ -5,13 +5,21 @@ var map;
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         center: {
-            lat: 50.8232076,
-            lng: -0.1545839
+            lat: 0,
+            lng: 0
         },
         zoom: 16,
         minZoom: 12,
         maxZoom: 18,
     });
+
+    if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+        });
+    } else {
+        console.log("No GeoLocation. :(");
+    }
 
     google.maps.event.addListener(map, 'click', function(event) {
         var location = event.latLng;
