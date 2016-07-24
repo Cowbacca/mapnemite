@@ -1,0 +1,19 @@
+{
+  "name": "mapnemite",
+  "version": "1.0.0",
+  "description": "Front-end for Mapnemite, a Pokemon Go companion site.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cowbacca/mapnemite.git"
+  },
+  "author": "Angus J. Goldsmith",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Cowbacca/mapnemite/issues"
+  },
+  "homepage": "https://github.com/Cowbacca/mapnemite#readme"
+}
