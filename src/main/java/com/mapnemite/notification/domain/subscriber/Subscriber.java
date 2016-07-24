@@ -1,5 +1,7 @@
-package com.mapnemite.notification.domain;
+package com.mapnemite.notification.domain.subscriber;
 
+import com.mapnemite.notification.domain.Notification;
+import com.mapnemite.notification.domain.NotificationSender;
 import lombok.Value;
 
 @Value

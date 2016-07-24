@@ -1,4 +1,4 @@
-package com.mapnemite.notification.domain;
+package com.mapnemite.notification.domain.subscriber;
 
 import java.util.stream.Stream;
 

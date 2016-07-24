@@ -1,6 +1,8 @@
 package com.mapnemite.notification.domain;
 
 import com.mapnemite.notification.domain.event.SubscribeCommand;
+import com.mapnemite.notification.domain.subscriber.Subscriber;
+import com.mapnemite.notification.domain.subscriber.SubscriberRepository;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;

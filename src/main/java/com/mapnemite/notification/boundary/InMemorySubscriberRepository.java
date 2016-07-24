@@ -1,7 +1,7 @@
 package com.mapnemite.notification.boundary;
 
-import com.mapnemite.notification.domain.Subscriber;
-import com.mapnemite.notification.domain.SubscriberRepository;
+import com.mapnemite.notification.domain.subscriber.Subscriber;
+import com.mapnemite.notification.domain.subscriber.SubscriberRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
