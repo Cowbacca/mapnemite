@@ -13,14 +13,10 @@ function initMap() {
         maxZoom: 18,
     });
 
-    google.maps.event.addListener(map, 'click', function(event) {
-        var location = event.latLng;
-        fetch('/lures?latitude=' + location.lat() + '&longitude=' + location.lng(), {
-            method: 'POST'
-        }).then(function(resp) {
-            return resp.json();
-        }).then(marker);
-    });
+    var kmzLayer = new google.maps.KmlLayer('http://www.google.com/maps/d/u/0/kml?mid=1lreAi3mhRKdY0SgAxaTJEQicOXg&lid=ZPejFFZ-O6w');
+    kmzLayer.setMap(map);
+
+    google.maps.event.addListener(kmzLayer, 'click', addLure);
 
     google.maps.event.addListener(map, 'bounds_changed', _.throttle(findMarkers, 1000));
 
@@ -79,6 +75,15 @@ function initMap() {
     function marker(lure) {
         var location = new google.maps.LatLng(lure.latitude, lure.longitude);
         placeMarker(location, lure.expiresAt);
+    }
+
+    function addLure(event) {
+        var location = event.latLng;
+        fetch('/lures?latitude=' + location.lat() + '&longitude=' + location.lng(), {
+            method: 'POST'
+        }).then(function(resp) {
+            return resp.json();
+        }).then(marker);
     }
 
     function placeMarker(location, expiresAt) {
