@@ -13,8 +13,12 @@ function initMap() {
         maxZoom: 18,
     });
 
-    var kmzLayer = new google.maps.KmlLayer('http://www.google.com/maps/d/u/0/kml?mid=1lreAi3mhRKdY0SgAxaTJEQicOXg&lid=ZPejFFZ-O6w');
-    kmzLayer.setMap(map);
+    var kmzLayer = new google.maps.KmlLayer({
+        url: 'http://www.google.com/maps/d/u/0/kml?mid=1lreAi3mhRKdY0SgAxaTJEQicOXg&lid=ZPejFFZ-O6w',
+        suppressInfoWindows: true,
+        preserveViewport: true,
+        map: map,
+    });
 
     google.maps.event.addListener(kmzLayer, 'click', addLure);
 
@@ -93,7 +97,7 @@ function initMap() {
         });
 
         new MapLabel({
-            text: 'Expires at: ' + moment(expiresAt).format('HH:mm'),
+            text: moment(expiresAt).format('HH:mm'),
             position: location,
             map: map,
             fontSize: 20
