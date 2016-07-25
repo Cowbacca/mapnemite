@@ -1,6 +1,6 @@
 package com.mapnemite.pointofinterest.domain;
 
-import com.mapnemite.pointofinterest.domain.location.Location;
+import com.mapnemite.common.location.domain.location.Location;
 import lombok.Value;
 
 import java.time.Duration;

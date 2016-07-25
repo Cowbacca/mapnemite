@@ -1,9 +1,9 @@
 package com.mapnemite.pointofinterest.boundary;
 
+import com.mapnemite.common.location.domain.location.Location;
 import com.mapnemite.pointofinterest.domain.LureAdder;
 import com.mapnemite.pointofinterest.domain.LureFinder;
 import com.mapnemite.pointofinterest.domain.event.*;
-import com.mapnemite.pointofinterest.domain.location.Location;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 

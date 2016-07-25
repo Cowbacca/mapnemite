@@ -1,4 +1,4 @@
-package com.mapnemite.pointofinterest.boundary;
+package com.mapnemite.common.location.boundary;
 
 import lombok.Value;
 

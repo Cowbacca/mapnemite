@@ -1,9 +1,9 @@
 package com.mapnemite.pointofinterest.domain;
 
+import com.mapnemite.common.location.domain.location.Location;
 import com.mapnemite.notification.domain.NotificationToSubscribersPusher;
 import com.mapnemite.pointofinterest.domain.event.AddLureCommand;
 import com.mapnemite.pointofinterest.domain.event.LureDocument;
-import com.mapnemite.pointofinterest.domain.location.Location;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;

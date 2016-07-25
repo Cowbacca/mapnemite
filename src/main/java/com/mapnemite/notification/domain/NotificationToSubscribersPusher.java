@@ -17,7 +17,7 @@ public class NotificationToSubscribersPusher {
     }
 
     public void pushNotificationToSubscribers(Notification notification) {
-        subscriberRepository.findAll()
+        subscriberRepository.findByLocationWithin(notification.relevantToSubscribersWithin())
                 .forEach(subscriber -> subscriber.sendNotification(notificationSender, notification));
     }
 }

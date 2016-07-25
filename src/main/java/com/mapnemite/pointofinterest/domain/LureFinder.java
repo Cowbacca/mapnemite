@@ -1,9 +1,9 @@
 package com.mapnemite.pointofinterest.domain;
 
+import com.mapnemite.common.location.domain.location.Circle;
+import com.mapnemite.common.location.domain.location.Location;
+import com.mapnemite.common.location.domain.location.Rectangle;
 import com.mapnemite.pointofinterest.domain.event.*;
-import com.mapnemite.pointofinterest.domain.location.Circle;
-import com.mapnemite.pointofinterest.domain.location.Location;
-import com.mapnemite.pointofinterest.domain.location.Rectangle;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;

@@ -1,9 +1,9 @@
 package com.mapnemite.pointofinterest.boundary;
 
+import com.mapnemite.common.location.domain.location.Circle;
+import com.mapnemite.common.location.domain.location.Rectangle;
 import com.mapnemite.pointofinterest.domain.Lure;
 import com.mapnemite.pointofinterest.domain.LureRepository;
-import com.mapnemite.pointofinterest.domain.location.Circle;
-import com.mapnemite.pointofinterest.domain.location.Rectangle;
 import io.searchbox.action.Action;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;

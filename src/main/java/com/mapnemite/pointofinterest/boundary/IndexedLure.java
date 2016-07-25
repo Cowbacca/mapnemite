@@ -1,7 +1,8 @@
 package com.mapnemite.pointofinterest.boundary;
 
+import com.mapnemite.common.location.boundary.GeoPoint;
+import com.mapnemite.common.location.domain.location.Location;
 import com.mapnemite.pointofinterest.domain.Lure;
-import com.mapnemite.pointofinterest.domain.location.Location;
 import lombok.Value;
 
 import static com.mapnemite.LocalDateTimeUtils.fromEpoch;

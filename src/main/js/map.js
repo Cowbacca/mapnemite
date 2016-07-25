@@ -25,35 +25,48 @@ export function initMap() {
     google.maps.event.addListener(map, 'bounds_changed', throttle(findMarkers, 1000));
 
     if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(position => map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude)));
+        navigator.geolocation.getCurrentPosition(onPositionFound);
     } else {
         console.log("No GeoLocation. :(");
     }
 
-    if ('serviceWorker' in navigator) {
-        console.log('Service Worker is supported');
+    function onPositionFound(position) {
+        map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude))
+        if ('serviceWorker' in navigator) {
+            console.log('Service Worker is supported');
 
-        navigator.serviceWorker.addEventListener('message', event => marker(event.data));
+            navigator.serviceWorker.addEventListener('message', event => marker(event.data));
 
-        navigator.serviceWorker.register('sw.js').then(function() {
-            return navigator.serviceWorker.ready;
-        }).then(function(reg) {
-            console.log('Service Worker is ready :^)', reg);
-            reg.pushManager.subscribe({
-                userVisibleOnly: true
-            }).then(function(sub) {
-                fetch('/subscribers', {
-                    method: 'PUT',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(sub),
+            navigator.serviceWorker.register('sw.js')
+                .then(() => navigator.serviceWorker.ready)
+                .then(function(reg) {
+                    console.log('Service Worker is ready :^)', reg);
+                    reg.pushManager.subscribe({
+                            userVisibleOnly: true
+                        })
+                        .then(sub => {
+                            return {
+                                ...sub.toJSON(),
+                                latitude: position.coords.latitude,
+                                longitude: position.coords.longitude,
+                            };
+                        })
+                        .then(pushSubscription => {
+                            console.log(pushSubscription);
+                            fetch('/subscribers', {
+                                                        method: 'PUT',
+                                                        headers: {
+                                                            'Accept': 'application/json',
+                                                            'Content-Type': 'application/json'
+                                                        },
+                                                        body: JSON.stringify(pushSubscription),
+                                                    }
+                                                    );
+                        });
+                }).catch(function(error) {
+                    console.log('Service Worker error :^(', error);
                 });
-            });
-        }).catch(function(error) {
-            console.log('Service Worker error :^(', error);
-        });
+        }
     }
 
     function findMarkers(event) {

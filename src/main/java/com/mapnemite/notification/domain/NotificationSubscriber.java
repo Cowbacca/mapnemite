@@ -17,6 +17,6 @@ public class NotificationSubscriber {
     }
 
     public void subscribe(SubscribeCommand subscribeCommand) {
-        subscriberRepository.save(new Subscriber(subscribeCommand.getRegistrationId(), subscribeCommand.getP256dh(), subscribeCommand.getAuth()));
+        subscriberRepository.save(new Subscriber(subscribeCommand.getRegistrationId(), subscribeCommand.getP256dh(), subscribeCommand.getAuth(), subscribeCommand.getLocation()));
     }
 }
