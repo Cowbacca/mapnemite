@@ -104,3 +104,5 @@ function initMap() {
         });
     }
 }
+
+export default map;
