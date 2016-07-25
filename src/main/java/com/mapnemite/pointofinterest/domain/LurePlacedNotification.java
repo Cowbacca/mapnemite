@@ -2,7 +2,7 @@ package com.mapnemite.pointofinterest.domain;
 
 import com.google.common.collect.ImmutableMap;
 import com.mapnemite.LocalDateTimeUtils;
-import com.mapnemite.common.location.domain.location.Circle;
+import com.mapnemite.common.location.domain.Circle;
 import com.mapnemite.notification.domain.Notification;
 import lombok.Value;
 

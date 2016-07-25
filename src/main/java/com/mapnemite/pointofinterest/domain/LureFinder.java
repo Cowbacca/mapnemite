@@ -1,8 +1,8 @@
 package com.mapnemite.pointofinterest.domain;
 
-import com.mapnemite.common.location.domain.location.Circle;
-import com.mapnemite.common.location.domain.location.Location;
-import com.mapnemite.common.location.domain.location.Rectangle;
+import com.mapnemite.common.location.domain.Circle;
+import com.mapnemite.common.location.domain.Location;
+import com.mapnemite.common.location.domain.Rectangle;
 import com.mapnemite.pointofinterest.domain.event.*;
 import org.springframework.stereotype.Component;
 

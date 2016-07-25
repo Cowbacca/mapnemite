@@ -1,6 +1,6 @@
 package com.mapnemite.notification.domain.subscriber;
 
-import com.mapnemite.common.location.domain.location.Location;
+import com.mapnemite.common.location.domain.Location;
 import com.mapnemite.notification.domain.Notification;
 import com.mapnemite.notification.domain.NotificationSender;
 import lombok.Value;

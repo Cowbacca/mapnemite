@@ -1,6 +1,6 @@
 package com.mapnemite.pointofinterest.boundary;
 
-import com.mapnemite.common.location.domain.location.Location;
+import com.mapnemite.common.location.domain.Location;
 import com.mapnemite.pointofinterest.domain.LureAdder;
 import com.mapnemite.pointofinterest.domain.LureFinder;
 import com.mapnemite.pointofinterest.domain.event.*;

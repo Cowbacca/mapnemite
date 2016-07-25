@@ -1,6 +1,6 @@
 package com.mapnemite.notification.domain.event;
 
-import com.mapnemite.common.location.domain.location.Location;
+import com.mapnemite.common.location.domain.Location;
 import lombok.Value;
 
 @Value

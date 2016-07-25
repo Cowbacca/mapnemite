@@ -1,7 +1,7 @@
 package com.mapnemite.notification.boundary;
 
 import com.mapnemite.common.location.boundary.GeoPoint;
-import com.mapnemite.common.location.domain.location.Location;
+import com.mapnemite.common.location.domain.Location;
 import com.mapnemite.notification.domain.subscriber.Subscriber;
 import lombok.Value;
 

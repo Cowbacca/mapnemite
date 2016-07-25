@@ -1,6 +1,6 @@
 package com.mapnemite.notification.boundary;
 
-import com.mapnemite.common.location.domain.location.Location;
+import com.mapnemite.common.location.domain.Location;
 import com.mapnemite.notification.domain.event.SubscribeCommand;
 import lombok.Data;
 
