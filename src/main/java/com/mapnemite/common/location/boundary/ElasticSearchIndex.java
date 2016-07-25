@@ -1,6 +1,7 @@
 package com.mapnemite.common.location.boundary;
 
 import com.mapnemite.common.location.domain.Circle;
+import com.mapnemite.common.location.domain.Rectangle;
 import com.mapnemite.pointofinterest.boundary.ElasticSearchException;
 import io.searchbox.action.Action;
 import io.searchbox.client.JestClient;
@@ -13,6 +14,7 @@ import io.searchbox.indices.IndicesExists;
 import io.searchbox.indices.mapping.PutMapping;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.common.unit.DistanceUnit;
+import org.elasticsearch.index.query.GeoBoundingBoxQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -22,13 +24,13 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 @Slf4j
-public class ElasticSearchRepository<M, I> {
+public class ElasticSearchIndex<M, I> {
     private final JestClient jestClient;
     private final String name;
     private final String type;
     private final Class<? extends I> indexedType;
 
-    public ElasticSearchRepository(JestClient jestClient, String name, String type, Class<I> indexedType) {
+    public ElasticSearchIndex(JestClient jestClient, String name, String type, Class<I> indexedType) {
         this.jestClient = jestClient;
         this.name = name;
         this.type = type;
@@ -91,5 +93,11 @@ public class ElasticSearchRepository<M, I> {
         return QueryBuilders.geoDistanceQuery(field)
                 .point(circle.getX(), circle.getY())
                 .distance(circle.getRadius(), DistanceUnit.KILOMETERS);
+    }
+
+    public static GeoBoundingBoxQueryBuilder rectangleGeoFilter(String field, Rectangle rectangle) {
+        return QueryBuilders.geoBoundingBoxQuery(field)
+                .topRight(rectangle.getTopRight().getLatitude(), rectangle.getTopRight().getLongitude())
+                .bottomLeft(rectangle.getBottomLeft().getLatitude(), rectangle.getBottomLeft().getLongitude());
     }
 }

@@ -22,7 +22,11 @@ public class IndexedLure {
         this.expiresAt = toEpoch(lure.getExpiration().expiresAt());
     }
 
-    public Lure toPointOfInterest() {
+    public Lure toLure() {
         return new Lure(new Location(location.getLat(), location.getLon()), fromEpoch(placedAt));
+    }
+
+    public String indexedId() {
+        return location.getLat() + "," + location.getLon();
     }
 }
