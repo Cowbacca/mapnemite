@@ -1,7 +1,14 @@
 {
   "name": "Mapnemite",
-  "gcm_sender_id": "935236950549",
+  "icons": [
+    {
+      "src": "images/icon.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    }
+  ],
   "start_url": "/",
   "display": "standalone",
-  "orientation": "portrait"
+  "orientation": "portrait",
+  "gcm_sender_id": "935236950549"
 }
