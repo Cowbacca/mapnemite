@@ -1,5 +1,6 @@
 {
-  "name": "Mapnemite",
+  "short_name": "Mapnemite",
+  "name": "Mapnemite Lure Map",
   "icons": [
     {
       "src": "images/icon-2x.png",
