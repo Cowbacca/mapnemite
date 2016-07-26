@@ -13,3 +13,7 @@ GCM_KEY=
 ```
 
 Then run `./gradlew bootRun`.
+
+## Frontend Development
+
+First run `npm install` to install dependencies.  Then `npm run package` to build the compiled bundle file from JS in the src/main/js directory.
