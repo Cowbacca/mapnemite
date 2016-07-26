@@ -24,7 +24,7 @@ public class LurePlacedNotification implements Notification {
                 .put("longitude", String.valueOf(longitude))
                 .build();
 
-        this.relevancyCircle = new Circle(latitude, longitude, 0.5);
+        this.relevancyCircle = new Circle(latitude, longitude, 1);
     }
 
     @Override
