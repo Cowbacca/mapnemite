@@ -12,6 +12,7 @@ import io.searchbox.core.SearchResult;
 import io.searchbox.indices.CreateIndex;
 import io.searchbox.indices.IndicesExists;
 import io.searchbox.indices.mapping.PutMapping;
+import io.searchbox.params.Parameters;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.GeoBoundingBoxQueryBuilder;
@@ -69,6 +70,7 @@ public class ElasticSearchIndex<M, I> {
     public Stream<M> searchBy(SearchSourceBuilder searchSourceBuilder, Function<I, M> indexedTypeToModelTypeFunction) {
         Search search = new Search.Builder(searchSourceBuilder.toString())
                 .addIndex(name)
+                .setParameter(Parameters.SIZE, 100)
                 .build();
         SearchResult results = execute(search);
 
