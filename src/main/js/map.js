@@ -35,37 +35,17 @@ export function initMap() {
         if ('serviceWorker' in navigator) {
             console.log('Service Worker is supported');
 
-            navigator.serviceWorker.addEventListener('message', event => marker(event.data));
-
-            navigator.serviceWorker.register('sw.js')
-                .then(() => navigator.serviceWorker.ready)
-                .then(function(reg) {
-                    console.log('Service Worker is ready :^)', reg);
-                    reg.pushManager.subscribe({
-                            userVisibleOnly: true
-                        })
-                        .then(sub => {
-                            return {
-                                ...sub.toJSON(),
-                                latitude: position.coords.latitude,
-                                longitude: position.coords.longitude,
-                            };
-                        })
-                        .then(pushSubscription => {
-                            console.log(pushSubscription);
-                            fetch('/subscribers', {
-                                                        method: 'PUT',
-                                                        headers: {
-                                                            'Accept': 'application/json',
-                                                            'Content-Type': 'application/json'
-                                                        },
-                                                        body: JSON.stringify(pushSubscription),
-                                                    }
-                                                    );
-                        });
-                }).catch(function(error) {
-                    console.log('Service Worker error :^(', error);
+            if (Notification.permission === "granted") {
+                registerServiceWorker(position);
+            } else {
+                Notification.requestPermission(permission => {
+                    if (permission === "granted") {
+                        registerServiceWorker(position);
+                    } else {
+                        alert("You will not receive notifications about new nearby lures.")
+                    }
                 });
+            }
         }
     }
 
@@ -111,5 +91,38 @@ export function initMap() {
             map: map,
             fontSize: 20
         });
+    }
+
+    function registerServiceWorker(position) {
+        navigator.serviceWorker.addEventListener('message', event => marker(event.data));
+
+        navigator.serviceWorker.register('sw.js')
+            .then(() => navigator.serviceWorker.ready)
+            .then(function(reg) {
+                console.log('Service Worker is ready :^)', reg);
+                reg.pushManager.subscribe({
+                        userVisibleOnly: true
+                    })
+                    .then(sub => {
+                        return {
+                            ...sub.toJSON(),
+                            latitude: position.coords.latitude,
+                            longitude: position.coords.longitude,
+                        };
+                    })
+                    .then(pushSubscription => {
+                        console.log(pushSubscription);
+                        fetch('/subscribers', {
+                            method: 'PUT',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(pushSubscription),
+                        });
+                    });
+            }).catch(function(error) {
+                console.log('Service Worker error :^(', error);
+            });
     }
 }

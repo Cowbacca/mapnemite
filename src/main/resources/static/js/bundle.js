@@ -118,35 +118,20 @@
 	        if ('serviceWorker' in navigator) {
 	            console.log('Service Worker is supported');
 
-	            navigator.serviceWorker.addEventListener('message', function (event) {
-	                return marker(event.data);
-	            });
+	            if (Notification.permission === "granted") {
+	                registerServiceWorker(position);
+	            }
 
-	            navigator.serviceWorker.register('sw.js').then(function () {
-	                return navigator.serviceWorker.ready;
-	            }).then(function (reg) {
-	                console.log('Service Worker is ready :^)', reg);
-	                reg.pushManager.subscribe({
-	                    userVisibleOnly: true
-	                }).then(function (sub) {
-	                    return _extends({}, sub.toJSON(), {
-	                        latitude: position.coords.latitude,
-	                        longitude: position.coords.longitude
+	            // Otherwise, we need to ask the user for permission
+	            else if (Notification.permission !== 'denied') {
+	                    Notification.requestPermission(function (permission) {
+	                        if (permission === "granted") {
+	                            registerServiceWorker(position);
+	                        } else {
+	                            alert("You will not recieve notifications about new nearby lures.");
+	                        }
 	                    });
-	                }).then(function (pushSubscription) {
-	                    console.log(pushSubscription);
-	                    fetch('/subscribers', {
-	                        method: 'PUT',
-	                        headers: {
-	                            'Accept': 'application/json',
-	                            'Content-Type': 'application/json'
-	                        },
-	                        body: JSON.stringify(pushSubscription)
-	                    });
-	                });
-	            }).catch(function (error) {
-	                console.log('Service Worker error :^(', error);
-	            });
+	                }
 	        }
 	    }
 
@@ -190,6 +175,38 @@
 	            position: location,
 	            map: map,
 	            fontSize: 20
+	        });
+	    }
+
+	    function registerServiceWorker(position) {
+	        navigator.serviceWorker.addEventListener('message', function (event) {
+	            return marker(event.data);
+	        });
+
+	        navigator.serviceWorker.register('sw.js').then(function () {
+	            return navigator.serviceWorker.ready;
+	        }).then(function (reg) {
+	            console.log('Service Worker is ready :^)', reg);
+	            reg.pushManager.subscribe({
+	                userVisibleOnly: true
+	            }).then(function (sub) {
+	                return _extends({}, sub.toJSON(), {
+	                    latitude: position.coords.latitude,
+	                    longitude: position.coords.longitude
+	                });
+	            }).then(function (pushSubscription) {
+	                console.log(pushSubscription);
+	                fetch('/subscribers', {
+	                    method: 'PUT',
+	                    headers: {
+	                        'Accept': 'application/json',
+	                        'Content-Type': 'application/json'
+	                    },
+	                    body: JSON.stringify(pushSubscription)
+	                });
+	            });
+	        }).catch(function (error) {
+	            console.log('Service Worker error :^(', error);
 	        });
 	    }
 	}
