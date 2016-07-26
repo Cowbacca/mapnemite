@@ -14,7 +14,7 @@ self.addEventListener('activate', function(event) {
 self.addEventListener('push', function(event) {
   console.log('Push message', event);
 
-  var title = 'New lure added!';
+  var title = 'Nearby lure activated!';
 
   var json = event.data.json();
   var data = {
