@@ -11,6 +11,7 @@ public class IndexedSubscriber {
     private final String publicKey;
     private final String userAuth;
     private final GeoPoint lastKnownLocation;
+    private final boolean hasUnreadNotification;
 
     public IndexedSubscriber(Subscriber subscriber) {
         this.registrationId = subscriber.getRegistrationId();
@@ -18,9 +19,10 @@ public class IndexedSubscriber {
         this.userAuth = subscriber.getUserAuth();
         Location lastKnownPosition = subscriber.getLastKnownPosition();
         this.lastKnownLocation = new GeoPoint(lastKnownPosition.getLatitude(), lastKnownPosition.getLongitude());
+        this.hasUnreadNotification = subscriber.isHasUnreadNotification();
     }
 
     public Subscriber toSubscriber() {
-        return new Subscriber(registrationId, publicKey, userAuth, new Location(lastKnownLocation.getLat(), lastKnownLocation.getLon()));
+        return new Subscriber(registrationId, publicKey, userAuth, new Location(lastKnownLocation.getLat(), lastKnownLocation.getLon()), hasUnreadNotification);
     }
 }

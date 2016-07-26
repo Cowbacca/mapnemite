@@ -11,9 +11,13 @@ public class Subscriber {
     private final String publicKey;
     private final String userAuth;
     private final Location lastKnownPosition;
+    private final boolean hasUnreadNotification;
 
 
-    public void sendNotification(NotificationSender notificationSender, Notification notification) {
-        notificationSender.send(notification, registrationId, publicKey, userAuth);
+    public void sendNotification(NotificationSender notificationSender, Notification notification, SubscriberRepository subscriberRepository) {
+        if (!hasUnreadNotification) {
+            notificationSender.send(notification, registrationId, publicKey, userAuth);
+            subscriberRepository.save(new Subscriber(registrationId, publicKey, userAuth, lastKnownPosition, true));
+        }
     }
 }
