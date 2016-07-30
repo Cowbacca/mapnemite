@@ -17,14 +17,14 @@ export function initMap() {
         maxZoom: 18,
     });
 
-    const kmzLayer = new google.maps.KmlLayer({
-        url: 'http://www.google.com/maps/d/u/0/kml?mid=1lreAi3mhRKdY0SgAxaTJEQicOXg&lid=ZPejFFZ-O6w',
-        suppressInfoWindows: true,
-        preserveViewport: true,
-        map: map,
+    map.data.loadGeoJson('geo_stops.json');
+    map.data.setStyle({
+        icon: {
+            url: 'http://orig08.deviantart.net/ea64/f/2011/175/b/2/pokeball_free_icon_by_scratch_the_hedgie-d3jwgjs.gif',
+            anchor: new google.maps.Point(25, 25),
+        }
     });
-
-    google.maps.event.addListener(kmzLayer, 'click', addLure);
+    map.data.addListener('click', addLure);
 
     google.maps.event.addListener(map, 'bounds_changed', throttle(findMarkers, 1000));
 
@@ -86,14 +86,14 @@ export function initMap() {
     function placeMarker(location, expiresAt) {
         new google.maps.Marker({
             position: location,
-            map: map
+            map: map,
         });
 
         new MapLabel({
             text: moment(expiresAt).format('HH:mm'),
             position: location,
             map: map,
-            fontSize: 20
+            fontSize: 20,
         });
     }
 
@@ -115,7 +115,6 @@ export function initMap() {
                         };
                     })
                     .then(pushSubscription => {
-                        console.log(pushSubscription);
                         fetch('/subscribers', {
                             method: 'PUT',
                             headers: {
