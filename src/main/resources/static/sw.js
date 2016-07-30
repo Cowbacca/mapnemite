@@ -32,16 +32,16 @@ self.addEventListener('push', function(event) {
 
   event.waitUntil(
     self.registration.showNotification(title, {
-      'body': 'Expires at ' + new Date(data.expiresAt).toLocaleTimeString(),
-      'icon': 'images/icon.png'
+      data,
+      body: 'Expires at ' + new Date(data.expiresAt).toLocaleTimeString(),
+      icon: 'images/icon.png'
     }));
 });
 
 self.addEventListener('notificationclick', function(event) {
     console.log('Notification click: tag ', event.notification.tag);
     event.notification.close();
-
-    var url = 'https://www.mapnemite.com';
+    var url = 'https://www.mapnemite.com?lat=' + event.notification.data.latitude + '&long=' + event.notification.data.longitude;
     event.waitUntil(
         clients.matchAll({
             type: 'window'
