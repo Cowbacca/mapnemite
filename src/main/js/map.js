@@ -1,13 +1,17 @@
 import moment from 'moment';
 import throttle from 'lodash/throttle';
 import google from 'google';
+import { parse } from 'query-string';
 
 export function initMap() {
+    const { lat, long } = parse(window.location.search);
+    const center = {
+        lat: lat ? parseFloat(lat) : 50.8225,
+        lng: long ? parseFloat(long) : 0.1372,
+    };
+
     const map = new google.maps.Map(document.getElementById('map'), {
-        center: {
-            lat: 50.8225,
-            lng: 0.1372,
-        },
+        center,
         zoom: 16,
         minZoom: 12,
         maxZoom: 18,
@@ -24,7 +28,7 @@ export function initMap() {
 
     google.maps.event.addListener(map, 'bounds_changed', throttle(findMarkers, 1000));
 
-    if ("geolocation" in navigator) {
+    if (!lat && !long && "geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(onPositionFound);
     } else {
         console.log("No GeoLocation. :(");

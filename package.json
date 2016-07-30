@@ -4,7 +4,8 @@
   "description": "Front-end for Mapnemite, a Pokemon Go companion site.",
   "main": "index.js",
   "scripts": {
-    "package": "webpack --config=config/webpack.config.production.js"
+    "package": "webpack --config=config/webpack.config.production.js",
+    "watch": "webpack --watch --progress --colors --config=config/webpack.config.development.js"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,7 @@
     "js-map-label": "^1.0.1",
     "lodash": "^4.14.0",
     "moment": "^2.14.1",
+    "query-string": "^4.2.2",
     "webpack": "^1.13.1"
   },
   "devDependencies": {
@@ -35,7 +37,6 @@
     "eslint-plugin-babel": "^3.2.0",
     "eslint-plugin-import": "^1.8.1",
     "exports-loader": "^0.6.3",
-    "json-env": "^1.0.1",
-    "webpack-dev-server": "^1.14.1"
+    "json-env": "^1.0.1"
   }
 }
