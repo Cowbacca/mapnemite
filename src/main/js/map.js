@@ -6,8 +6,8 @@ import { parse } from 'query-string';
 export function initMap() {
     const { lat, long } = parse(window.location.search);
     const center = {
-        lat: lat ? parseFloat(lat) : 50.8225,
-        lng: long ? parseFloat(long) : 0.1372,
+        lat: lat ? parseFloat(lat) : 50.82253,
+        lng: long ? parseFloat(long) : -0.137163,
     };
 
     const map = new google.maps.Map(document.getElementById('map'), {
