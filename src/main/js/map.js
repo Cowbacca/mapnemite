@@ -13,15 +13,15 @@ export function initMap() {
     const map = new google.maps.Map(document.getElementById('map'), {
         center,
         zoom: 16,
-        minZoom: 12,
+        minZoom: 15,
         maxZoom: 18,
     });
 
     map.data.loadGeoJson('geo_stops.json');
     map.data.setStyle({
         icon: {
-            url: 'http://orig08.deviantart.net/ea64/f/2011/175/b/2/pokeball_free_icon_by_scratch_the_hedgie-d3jwgjs.gif',
-            anchor: new google.maps.Point(25, 25),
+            url: '/images/pokestop_marker.png',
+            anchor: new google.maps.Point(11, 11),
         }
     });
     map.data.addListener('click', addLure);
